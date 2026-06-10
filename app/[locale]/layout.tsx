@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface LocaleLayoutProps {
   children: React.ReactNode;
@@ -21,6 +22,11 @@ export function generateMetadata({ params }: LocaleLayoutProps): Metadata {
       ? '2026年FIFA世界杯官方信息平台 - 赛程、分组、球队和最新新闻'
       : 'Official information platform for FIFA World Cup 2026 - Schedule, Groups, Teams, and Latest News',
   };
+}
+
+// 为静态导出生成所有语言版本
+export function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'zh' }];
 }
 
 export default function LocaleLayout({ children, params }: LocaleLayoutProps) {
@@ -60,20 +66,7 @@ export default function LocaleLayout({ children, params }: LocaleLayoutProps) {
             </div>
             
             {/* 语言切换 */}
-            <div className="flex items-center space-x-2">
-              <Link
-                href={`/en${window?.location?.pathname?.replace(/^\/[^\/]+/, '') || '/'}`}
-                className={`px-3 py-1 rounded ${locale === 'en' ? 'bg-blue-600' : 'bg-blue-800'}`}
-              >
-                EN
-              </Link>
-              <Link
-                href={`/zh${window?.location?.pathname?.replace(/^\/[^\/]+/, '') || '/'}`}
-                className={`px-3 py-1 rounded ${locale === 'zh' ? 'bg-blue-600' : 'bg-blue-800'}`}
-              >
-                中文
-              </Link>
-            </div>
+            <LanguageSwitcher currentLocale={locale} />
           </div>
         </div>
       </nav>

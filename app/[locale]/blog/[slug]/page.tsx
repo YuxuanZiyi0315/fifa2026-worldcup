@@ -4,6 +4,7 @@ import { getBlogPost, getAllBlogPosts } from '@/lib/blog';
 import { Metadata } from 'next';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import ShareButtons from './ShareButtons';
 
 interface BlogDetailProps {
   params: {
@@ -47,6 +48,24 @@ export function generateMetadata({ params }: BlogDetailProps): Metadata {
       }
     }
   };
+}
+
+// 为静态导出生成所有博客文章页面
+export function generateStaticParams() {
+  const locales = ['en', 'zh'];
+  const params: { locale: string; slug: string }[] = [];
+  
+  locales.forEach(locale => {
+    const posts = getAllBlogPosts(locale);
+    posts.forEach(post => {
+      params.push({
+        locale,
+        slug: post.slug
+      });
+    });
+  });
+  
+  return params;
 }
 
 export default function BlogDetailPage({ params }: BlogDetailProps) {
@@ -157,35 +176,11 @@ export default function BlogDetailPage({ params }: BlogDetailProps) {
           <h3 className="text-lg font-semibold mb-4">
             {isZh ? '分享这篇文章' : 'Share this article'}
           </h3>
-          <div className="flex space-x-4">
-            <button 
-              onClick={() => {
-                const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://fifa2026.worldtoolx.com/${locale}/blog/${slug}`)}`;
-                window.open(url, '_blank');
-              }}
-              className="bg-blue-400 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition-colors"
-            >
-              Twitter
-            </button>
-            <button 
-              onClick={() => {
-                const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://fifa2026.worldtoolx.com/${locale}/blog/${slug}`)}`;
-                window.open(url, '_blank');
-              }}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
-            >
-              Facebook
-            </button>
-            <button 
-              onClick={() => {
-                const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://fifa2026.worldtoolx.com/${locale}/blog/${slug}`)}`;
-                window.open(url, '_blank');
-              }}
-              className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg transition-colors"
-            >
-              LinkedIn
-            </button>
-          </div>
+          <ShareButtons 
+            title={post.title} 
+            url={`https://fifa2026.worldtoolx.com/${locale}/blog/${slug}`}
+            isZh={isZh}
+          />
         </div>
       </article>
       

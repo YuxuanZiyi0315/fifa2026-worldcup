@@ -1,0 +1,25 @@
+name = "fifa2026-worldcup"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[pages]
+  build_command = "npm run build"
+  dist_dir = ".next"
+
+[build.environment]
+  NODE_VERSION = "18.17.0"
+  NPM_VERSION = "9.6.7"
+
+# 环境变量（如果需要）
+[vars]
+  # NEXT_PUBLIC_API_URL = "https://api.example.com"
+
+# 构建配置
+[commands]
+  # 在构建前运行
+  # before_build = "echo 'Starting build...'"
+  
+# 上传配置
+[upload]
+  # 上传前运行
+  # before_upload = "echo 'Uploading...'"

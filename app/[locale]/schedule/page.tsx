@@ -19,6 +19,11 @@ export function generateMetadata({ params }: SchedulePageProps): Metadata {
   };
 }
 
+// 为静态导出生成所有语言版本
+export function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'zh' }];
+}
+
 export default function SchedulePage({ params }: SchedulePageProps) {
   const locale = params.locale;
   const isZh = locale === 'zh';
